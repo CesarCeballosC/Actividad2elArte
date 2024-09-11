@@ -8,28 +8,34 @@ Exercises
 4. Change the snake to respond to mouse clicks.
 """
 
-from random import randrange
+from random import randrange,choice
 from turtle import *
-
 from freegames import square, vector
+
+
+colors = ['blue', 'green', 'purple', 'orange', 'yellow']
+
+def get_distinct_colors():
+    
+    color1 = choice(colors)
+    color2 = choice(colors)
+    while color2 == color1:  # Asegura que los colores sean distintos
+        color2 = choice(colors)
+    return color1, color2
 
 food = vector(0, 0) # Se crea la comida
 snake = [vector(10, 0)] # Se crea la serpiente
 aim = vector(0, -10) # Se crea la dirección de la serpiente
-
 
 # Se cambia la dirección de la serpiente
 def change(x, y):
     """Change snake direction."""
     aim.x = x
     aim.y = y
-
-
 # Se verifica que la serpiente se encuentre dentro de los límites de la pantalla
 def inside(head): 
     """Return True if head inside boundaries."""
     return -200 < head.x < 190 and -200 < head.y < 190
-
 
 # Se define el comportamiento del juego
 def move(): 
@@ -53,18 +59,30 @@ def move():
             yfood_position = randrange(int((food.y/10)-1),int((food.y/10)+2)) * 10
         food.x = xfood_position # Se crea una nueva comida con nueva posición
         food.y = yfood_position 
-        print('Food:', food.x, food.y) 
+        print('Food:', food.x, food.y)
+        
+        # Cambia el color de la comida y la serpiente al azar
+        global snake_color,food_color
+        snake_color,food_color = get_distinct_colors()
+
+ 
     else:
         snake.pop(0) 
 
     clear()
 
-    for body in snake: # Se dibuja la serpiente
-        square(body.x, body.y, 9, 'black') 
+    
 
-    square(food.x, food.y, 9, 'green') # Se dibuja la comida
+    for body in snake: # Se dibuja la serpiente
+        square(body.x, body.y, 9, snake_color) 
+
+    square(food.x, food.y, 9, food_color) # Se dibuja la comida
     update()
     ontimer(move, 100) 
+
+
+# Define colores iniciales al comenzar el juego
+snake_color, food_color = get_distinct_colors()
 
 
 setup(420, 420, 370, 0) # Se define el tamaño de la pantalla
