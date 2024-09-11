@@ -13,56 +13,65 @@ from turtle import *
 
 from freegames import square, vector
 
-food = vector(0, 0)
-snake = [vector(10, 0)]
-aim = vector(0, -10)
+food = vector(0, 0) # Se crea la comida
+snake = [vector(10, 0)] # Se crea la serpiente
+aim = vector(0, -10) # Se crea la dirección de la serpiente
 
 
+# Se cambia la dirección de la serpiente
 def change(x, y):
     """Change snake direction."""
     aim.x = x
     aim.y = y
 
 
-def inside(head):
+# Se verifica que la serpiente se encuentre dentro de los límites de la pantalla
+def inside(head): 
     """Return True if head inside boundaries."""
     return -200 < head.x < 190 and -200 < head.y < 190
 
 
-def move():
+# Se define el comportamiento del juego
+def move(): 
     """Move snake forward one segment."""
-    head = snake[-1].copy()
-    head.move(aim)
+    head = snake[-1].copy() 
+    head.move(aim) # La serpiente se mueve en la dirección que se le indica
 
-    if not inside(head) or head in snake:
-        square(head.x, head.y, 9, 'red')
+    if not inside(head) or head in snake: # Se definen los casos en los que la serpiente pierde
+        square(head.x, head.y, 9, 'red') # Se dibuja un cuadrado rojo en la posición de la serpiente
         update()
         return
 
     snake.append(head)
 
-    if head == food:
-        print('Snake:', len(snake))
-        food.x = randrange(-15, 15) * 10
-        food.y = randrange(-15, 15) * 10
+    if head == food: # Se verifica si la serpiente comió
+        print('Snake:', len(snake)) # Se imprime el tamaño de la serpiente
+        xfood_position = randrange(int((food.x/10)-1),int((food.x/10)+2)) * 10 # Se define la posición de la nueva comida a un paso de
+        yfood_position = randrange(int((food.y/10)-1),int((food.y/10)+2)) * 10 # distancia de la comida pasada
+        while xfood_position == food.x or yfood_position == food.y or not inside(food): # Se verifica que la comida no se encuentre
+            xfood_position = randrange(int((food.x/10)-1),int((food.x/10)+2)) * 10      # en la posición pasada ni fuera de los límites
+            yfood_position = randrange(int((food.y/10)-1),int((food.y/10)+2)) * 10
+        food.x = xfood_position # Se crea una nueva comida con nueva posición
+        food.y = yfood_position 
+        print('Food:', food.x, food.y) 
     else:
-        snake.pop(0)
+        snake.pop(0) 
 
     clear()
 
-    for body in snake:
-        square(body.x, body.y, 9, 'black')
+    for body in snake: # Se dibuja la serpiente
+        square(body.x, body.y, 9, 'black') 
 
-    square(food.x, food.y, 9, 'green')
+    square(food.x, food.y, 9, 'green') # Se dibuja la comida
     update()
-    ontimer(move, 100)
+    ontimer(move, 100) 
 
 
-setup(420, 420, 370, 0)
-hideturtle()
+setup(420, 420, 370, 0) # Se define el tamaño de la pantalla
+hideturtle() 
 tracer(False)
 listen()
-onkey(lambda: change(10, 0), 'Right')
+onkey(lambda: change(10, 0), 'Right') # Se definen las teclas para cambiar la dirección de la serpiente
 onkey(lambda: change(-10, 0), 'Left')
 onkey(lambda: change(0, 10), 'Up')
 onkey(lambda: change(0, -10), 'Down')
