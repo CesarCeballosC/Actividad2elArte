@@ -5,3 +5,6 @@
 - La serpiente cambia de color aleatoriamente entre 5 colores excepto el rojo
 - La comida cambia de color aleatoriamente entre 5 colores excepto el rojo
 
+### Instrucciones
+- Moverse con las flechas del teclado
+- Buscar alcanzar la comida sin tocar los bordes ni a si misma
